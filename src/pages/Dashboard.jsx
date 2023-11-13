@@ -5,16 +5,15 @@ import * as Chakra from "@chakra-ui/react";
 import ExpenseForm from "../components/ExpenseForm";
 import Header from "../components/Header";
 import ShowExpenses from "../components/ShowExpenses";
+import LeaderBoard from "../components/LearderBoard";
 
 export default function Dashboard() {
   const [showExpenseForm, setShowExpenseForm] = useState(true);
-
   const setShowExpenseFormHandler = () => {
     setShowExpenseForm(!showExpenseForm);
   };
   return (
-    <Chakra.Box id="dashboard">
-      <Header />
+    <React.Fragment>
       {showExpenseForm ? (
         <ExpenseForm setShowExpenseFormHandler={setShowExpenseFormHandler} />
       ) : (
@@ -25,6 +24,6 @@ export default function Dashboard() {
         </Chakra.Center>
       )}
       <ShowExpenses />
-    </Chakra.Box>
+    </React.Fragment>
   );
 }
