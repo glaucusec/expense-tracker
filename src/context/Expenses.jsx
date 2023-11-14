@@ -14,6 +14,19 @@ export default function ExpensesProvider(props) {
     setExpenses(newExpenses);
   };
 
+  const editExpenseHandler = (updatedExpense) => {
+    const filteredExpenses = expenses.map((expense) => {
+      if (expense._id === updatedExpense._id) {
+        expense.description = updatedExpense.description;
+        expense.amount = updatedExpense.amount;
+        expense.category = updatedExpense.category;
+      }
+      return expense;
+    });
+
+    setExpenses(filteredExpenses);
+  };
+
   const setExpenseHandler = (expenses) => {
     setExpenses(expenses);
   };
@@ -22,6 +35,7 @@ export default function ExpensesProvider(props) {
     expenses: expenses,
     setExpenseHandler: setExpenseHandler,
     deleteExpenseHandler: deleteExpenseHandler,
+    editExpenseHandler: editExpenseHandler,
     updateExpenseHandler: updateExpenseHandler,
   };
   return <ExpensesContext.Provider value={expenseCtx}>{props.children}</ExpensesContext.Provider>;

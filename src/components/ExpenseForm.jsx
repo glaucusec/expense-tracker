@@ -27,7 +27,7 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
     const selectedCategory = categoryRef.current.value;
     try {
       const response = await axios.post(
-        `${SERVER_URL}/user/expenses`,
+        `${SERVER_URL}/user/expense`,
         {
           amount: enteredAmount,
           description: enteredDescription,
@@ -75,12 +75,7 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
             helperText={"Enter the description of the expense"}
           />
           <Chakra.FormLabel>Category </Chakra.FormLabel>
-          <Chakra.Select
-            onChange={(e) => console.log(e.currentTarget.value)}
-            label={"hey"}
-            placeholder="Select option"
-            ref={categoryRef}
-          >
+          <Chakra.Select placeholder="Select option" ref={categoryRef}>
             <option value="Fuel">Fuel</option>
             <option value="Entertainment">Entertainment</option>
             <option value="Beauty/Wellness">Beauty/Wellness</option>

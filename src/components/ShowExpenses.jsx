@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import * as Chakra from "@chakra-ui/react";
 import { ExpensesContext } from "../context/Expenses";
+import DeleteExpense from "./DeleteExpense";
+import EditExpense from "./EditExpense";
 
 const authToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhlOWQwMTI3YmI1YWI0ZmMxZmEwZWQiLCJuYW1lIjoiQWJoaXNoZWsiLCJpYXQiOjE2OTk3ODYzNDB9.sR3h7dEhEd5ONgr7C7_J4lwuzTHuB0ha74NOD1QgfBo";
@@ -12,43 +14,18 @@ export default function ShowExpenses() {
   const expensesContext = useContext(ExpensesContext);
   const expenses = expensesContext.expenses;
   const setExpenseHandler = expensesContext.setExpenseHandler;
-  const deleteExpenseHandler = expensesContext.deleteExpenseHandler;
 
   const toast = Chakra.useToast();
-  // const [expenses, setExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const deleteExpense = async (_id) => {
-    try {
-      const response = await axios.delete(`${SERVER_URL}/user/delete`, {
-        data: { id: _id },
-        headers: {
-          Authorization: authToken,
-        },
-      });
-      if (response.status == 200) {
-        toast({
-          position: "top-right",
-          title: "Success",
-          description: "Expense deleted successfully",
-          status: "warning",
-          duration: 5000,
-          isClosable: true,
-        });
-        deleteExpenseHandler(_id);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     async function fetchExpenses() {
       try {
-        const response = await axios.get("http://localhost:3000/user/expenses", {
+        const response = await axios.get(`${SERVER_URL}/user/expenses`, {
           headers: {
             Authorization: authToken,
           },
+          withCredentials: true,
         });
         const receivedExpenses = response.data;
         setIsLoading(false);
@@ -85,7 +62,7 @@ export default function ShowExpenses() {
     );
   }
   return (
-    <Chakra.Card padding={"1rem"} mt={'1rem'}>
+    <Chakra.Card padding={"1rem"} mt={"1rem"}>
       <Chakra.Heading as={"h2"} size={"md"}>
         Added Expenses
       </Chakra.Heading>
@@ -96,8 +73,8 @@ export default function ShowExpenses() {
               <Chakra.Td>Amount</Chakra.Td>
               <Chakra.Td>Description</Chakra.Td>
               <Chakra.Td>Category</Chakra.Td>
-              <Chakra.Td>Delete Expense</Chakra.Td>
-              <Chakra.Td>Edit Expense</Chakra.Td>
+              <Chakra.Td>Delete </Chakra.Td>
+              <Chakra.Td>Edit </Chakra.Td>
             </Chakra.Tr>
           </Chakra.Thead>
           <Chakra.Tbody>
@@ -108,14 +85,12 @@ export default function ShowExpenses() {
                 <Chakra.Td>{expense.category}</Chakra.Td>
                 <Chakra.Td>
                   <Chakra.Text>
-                    <Chakra.Link onClick={() => deleteExpense(expense._id)} color="red">
-                      Delete
-                    </Chakra.Link>
+                    <DeleteExpense _id={expense._id} />
                   </Chakra.Text>
                 </Chakra.Td>
                 <Chakra.Td>
                   <Chakra.Text>
-                    <Chakra.Link color="gray">Edit</Chakra.Link>
+                    <EditExpense expense={expense} />
                   </Chakra.Text>
                 </Chakra.Td>
               </Chakra.Tr>

@@ -8,12 +8,28 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-export default function InputField({ placeholder, reference, type, label, helperText }) {
+export default function InputField({
+  placeholder,
+  reference,
+  type,
+  label,
+  helperText,
+  value,
+  onChange,
+}) {
   return (
     <Box pb={4}>
       <FormControl>
         <FormLabel>{label}</FormLabel>
-        <Input variant={'flushed'} placeholder={placeholder} ref={reference} type={type} required={true} />
+        <Input
+          onChange={onChange}
+          variant={"flushed"}
+          value={value}
+          placeholder={placeholder}
+          ref={reference}
+          type={type}
+          required={true}
+        />
         <FormHelperText>{helperText}</FormHelperText>
       </FormControl>
     </Box>
