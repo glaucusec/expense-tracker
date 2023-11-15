@@ -50,7 +50,7 @@ export default function Login() {
           break;
       }
       if (response.data.success) {
-        AuthStateUpdater(response.data.success, response.data.name);
+        AuthStateUpdater(response.data.success, response.data.name, response.data.isPremiumUser);
         toast({
           status: "success",
           title: "You are logged in!",

@@ -22,10 +22,13 @@ import axios from "axios";
 
 import { useContext } from "react";
 import { AuthContext } from "../context/Auth";
+import PremiumPurchase from "./PremiumPurchase";
 
 export default function Simple() {
   const authCtx = useContext(AuthContext);
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const logoutHandler = async () => {
     try {
       const response = await axios.get("/api/logout");
@@ -34,14 +37,16 @@ export default function Simple() {
           status: "warning",
           title: "You are logged Out!",
         });
-        authCtx.AuthStateUpdater(false, "");
+        authCtx.AuthStateUpdater(false, "", false);
       }
     } catch (error) {
       console.log(error.message);
+      toast({
+        status: "error",
+        title: "Can't log you out! Try again later.",
+      });
     }
   };
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -58,13 +63,20 @@ export default function Simple() {
             <Link to={"/dashboard"}>Expense Tracker</Link>
           </HStack>
           <Flex alignItems={"center"}>
-            <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }} pr={"10px"}>
-              <HStack spacing={8} alignItems={"center"}>
-                <Link to={"/dashboard/leaderboard"}>Leaderboard</Link>
-                <Link to={"/dashboard/reports"}>Reports</Link>
+            {authCtx.auth.isPremiumUser ? (
+              <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }} pr={"10px"}>
+                <HStack spacing={8} alignItems={"center"}>
+                  <Link to={"/dashboard/leaderboard"}>Leaderboard</Link>
+                  <Link to={"/dashboard/reports"}>Reports</Link>
+                </HStack>
+                <Icon as={MdWorkspacePremium} w={8} h={8} color="yellow.500" />
               </HStack>
-              <Icon as={MdWorkspacePremium} w={8} h={8} color="yellow.500" />
-            </HStack>
+            ) : (
+              <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }} pr={"10px"}>
+                <PremiumPurchase />
+              </HStack>
+            )}
+
             <Menu>
               <MenuButton as={Button} rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
                 <Avatar size={"sm"} bg={"gray"} />
@@ -80,11 +92,19 @@ export default function Simple() {
 
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              <Link to={"/dashboard/leaderboard"}>Leaderboard</Link>
-              <Link to={"/dashboard/reports"}>Reports</Link>
-              <Icon as={MdWorkspacePremium} w={8} h={8} color="yellow.500" />
-            </Stack>
+            {authCtx.auth.isPremiumUser ? (
+              <Stack as={"nav"} spacing={4}>
+                <Link to={"/dashboard/leaderboard"}>Leaderboard</Link>
+                <Link to={"/dashboard/reports"}>Reports</Link>
+                <Icon as={MdWorkspacePremium} w={8} h={8} color="yellow.500" />
+              </Stack>
+            ) : (
+              <Stack as={"nav"} spacing={4}>
+                <Button colorScheme="yellow" size={"sm"}>
+                  Buy Premium
+                </Button>
+              </Stack>
+            )}
           </Box>
         ) : null}
       </Box>

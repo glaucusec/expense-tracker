@@ -8,15 +8,16 @@ export default function AuthProvider(props) {
     auth: {
       isLoggedIn: false,
       name: "",
-      some: "",
+      isPremiumUser: false,
     },
     AuthStateUpdater: AuthStateUpdater,
   });
 
-  function AuthStateUpdater(status, name) {
+  function AuthStateUpdater(status, name, isPremium) {
     const newState = { ...state };
     newState.auth.isLoggedIn = status;
     newState.auth.name = name;
+    newState.auth.isPremiumUser = isPremium
     setState(newState);
   }
 
@@ -27,6 +28,7 @@ export default function AuthProvider(props) {
         const updatedState = { ...state };
         updatedState.auth.isLoggedIn = response.data.success;
         updatedState.auth.name = response.data.name;
+        updatedState.auth.isPremiumUser = response.data.isPremiumUser;
         setState(updatedState);
       }
     }
