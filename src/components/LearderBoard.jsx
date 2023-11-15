@@ -3,9 +3,7 @@ import axios from "axios";
 import * as Chakra from "@chakra-ui/react";
 import { GiPodiumWinner, GiPodiumSecond, GiPodiumThird } from "react-icons/gi";
 
-const authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhlOWQwMTI3YmI1YWI0ZmMxZmEwZWQiLCJuYW1lIjoiQWJoaXNoZWsiLCJpYXQiOjE2OTk3ODYzNDB9.sR3h7dEhEd5ONgr7C7_J4lwuzTHuB0ha74NOD1QgfBo";
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+const authToken = import.meta.env.VITE_AUTH_TOKEN;
 
 const prizes = [GiPodiumWinner, GiPodiumSecond, GiPodiumThird];
 
@@ -17,7 +15,7 @@ export default function LeaderBoard() {
   useEffect(() => {
     async function fetchLeaderBoard() {
       try {
-        const response = await axios.post(`${SERVER_URL}/premium/leaderboard`, {
+        const response = await axios.post(`/api/leaderboard`, {
           headers: {
             Authorization: authToken,
           },
@@ -65,9 +63,8 @@ export default function LeaderBoard() {
         <Chakra.CardBody>
           <Chakra.Stack divider={<Chakra.StackDivider />} spacing="4">
             {leaderboard.map((item, index) => {
-              console.log(index);
               return (
-                <Chakra.Box>
+                <Chakra.Box key={index}>
                   <Chakra.Heading size="xs" textTransform="uppercase">
                     {item.name} <Chakra.Icon as={prizes[index]}></Chakra.Icon>
                   </Chakra.Heading>

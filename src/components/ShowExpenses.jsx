@@ -5,11 +5,6 @@ import { ExpensesContext } from "../context/Expenses";
 import DeleteExpense from "./DeleteExpense";
 import EditExpense from "./EditExpense";
 
-const authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhlOWQwMTI3YmI1YWI0ZmMxZmEwZWQiLCJuYW1lIjoiQWJoaXNoZWsiLCJpYXQiOjE2OTk3ODYzNDB9.sR3h7dEhEd5ONgr7C7_J4lwuzTHuB0ha74NOD1QgfBo";
-
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
-
 export default function ShowExpenses() {
   const expensesContext = useContext(ExpensesContext);
   const expenses = expensesContext.expenses;
@@ -21,21 +16,20 @@ export default function ShowExpenses() {
   useEffect(() => {
     async function fetchExpenses() {
       try {
-        const response = await axios.get(`${SERVER_URL}/user/expenses`, {
-          headers: {
-            Authorization: authToken,
-          },
+        const response = await axios.get(`/api/expenses`, {
           withCredentials: true,
         });
         const receivedExpenses = response.data;
         setIsLoading(false);
         setExpenseHandler(receivedExpenses);
       } catch (error) {
+        console.log(error);
         setIsLoading(false);
+
         toast({
           position: "top-right",
-          title: "Error fetching Expenses",
-          description: "Check your connection or Try later!",
+          title: error.response.data.message,
+          description: error.message,
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -54,7 +48,7 @@ export default function ShowExpenses() {
   }
   if (!isLoading && expenses.length == 0) {
     return (
-      <Chakra.Card padding={"1rem"}>
+      <Chakra.Card padding={"1rem"} mt={"1rem"}>
         <Chakra.Heading as={"h2"} size={"md"}>
           Empty Expenses
         </Chakra.Heading>

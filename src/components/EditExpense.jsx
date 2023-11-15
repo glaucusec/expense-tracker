@@ -6,16 +6,13 @@ import InputField from "./ui/InputField";
 import { ExpensesContext } from "../context/Expenses";
 import { FaEdit } from "react-icons/fa";
 
-const authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhlOWQwMTI3YmI1YWI0ZmMxZmEwZWQiLCJuYW1lIjoiQWJoaXNoZWsiLCJpYXQiOjE2OTk3ODYzNDB9.sR3h7dEhEd5ONgr7C7_J4lwuzTHuB0ha74NOD1QgfBo";
-
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 const categories = ["Fuel", "Entertainment", "Beauty/Wellness", "Pets", "Shopping"];
 
 export default function EditExpense({ expense }) {
   const expensesContext = useContext(ExpensesContext);
   const editExpenseHandler = expensesContext.editExpenseHandler;
 
+  const [loading, setLoading] = useState(false);
   const toast = Chakra.useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -37,10 +34,10 @@ export default function EditExpense({ expense }) {
 
   const editExpense = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axios.put(
-        `${SERVER_URL}/user/expense`,
+        `/api/expense`,
         {
           id: _id,
           amount: amount,
@@ -48,9 +45,7 @@ export default function EditExpense({ expense }) {
           category: category,
         },
         {
-          headers: {
-            Authorization: authToken,
-          },
+          withCredentials: true,
         }
       );
       if (response.status == 200) {
@@ -64,10 +59,20 @@ export default function EditExpense({ expense }) {
           isClosable: true,
         });
         // Close the Modal
+        setLoading(false);
         onClose();
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.error(error);
+      toast({
+        position: "top-right",
+        title: error.response.data.message,
+        description: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 
@@ -109,7 +114,7 @@ export default function EditExpense({ expense }) {
             </Chakra.ModalBody>
 
             <Chakra.ModalFooter>
-              <Chakra.Button type="submit" colorScheme="blue">
+              <Chakra.Button isLoading={loading ? true : false} type="submit" colorScheme="blue">
                 Edit
               </Chakra.Button>
               <Chakra.Button variant="ghost" mr={3} onClick={onClose}>

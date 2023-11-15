@@ -5,6 +5,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { extendTheme } from "@chakra-ui/react";
 
+import ExpensesProvider from "./context/Expenses";
+import AuthProvider from "./context/Auth";
+
 const theme = extendTheme({
   fonts: {
     heading: "Verdana",
@@ -14,10 +17,14 @@ const theme = extendTheme({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
-    </BrowserRouter>
+    <AuthProvider>
+      <ExpensesProvider>
+        <BrowserRouter>
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
+        </BrowserRouter>
+      </ExpensesProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

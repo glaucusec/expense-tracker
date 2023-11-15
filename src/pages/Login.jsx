@@ -1,14 +1,20 @@
 import "./Login.css";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
+import { useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import * as Chakra from "@chakra-ui/react";
 import InputField from "../components/ui/InputField";
 import ValidationMessage from "../components/ui/ValidationMessage";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+// Context
+import { AuthContext } from "../context/Auth";
 
 export default function Login() {
+  const toast = useToast();
+  const authContext = useContext(AuthContext);
+  const AuthStateUpdater = authContext.AuthStateUpdater;
+
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,7 +28,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `${SERVER_URL}/user/login`,
+        `/api/login`,
         {
           email: currEmail,
           password: currPassword,
@@ -36,7 +42,6 @@ export default function Login() {
       const statusCode = response.status;
       switch (statusCode) {
         case 200:
-          console.log(response);
           setValidationMessage({
             type: "success",
             title: "Login Successful. ",
@@ -44,6 +49,14 @@ export default function Login() {
           });
           break;
       }
+      if (response.data.success) {
+        AuthStateUpdater(response.data.success, response.data.name);
+        toast({
+          status: "success",
+          title: "You are logged in!",
+        });
+      }
+
       setIsSubmitting(false);
     } catch (error) {
       const statusCode = error.response.status;

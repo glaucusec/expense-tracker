@@ -1,41 +1,40 @@
 import "./App.css";
 import { useState, useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 import LeaderBoard from "./components/LearderBoard";
 import Reports from "./components/Reports";
 import Header from "./components/Header";
 
-import ExpensesProvider from "./context/Expenses";
-import AuthProvider from "./context/Auth";
+import { AuthContext } from "./context/Auth";
 
 function App() {
-  const currentPath = window.location.pathname;
+  const authCtx = useContext(AuthContext);
 
-  const isLoginPage = currentPath == "/login";
-  const isRegisterPage = currentPath == "/register";
-  const renderHeader = !isLoginPage && !isRegisterPage && <Header />;
+  const loggedIn = authCtx.auth.isLoggedIn;
+  const renderHeader = loggedIn && <Header />;
 
   return (
-    <AuthProvider>
-      <ExpensesProvider>
-        <Box id="dashboard">
-          {renderHeader}
-          <Routes>
-            <Route path="/dashboard">
-              <Route index element={<Dashboard />} />
-              <Route path="premium" element={<LeaderBoard />} />
-              <Route path="reports" element={<Reports />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </Box>
-      </ExpensesProvider>
-    </AuthProvider>
+    <Box id="dashboard">
+      {renderHeader}
+      <Routes>
+        <Route path="/dashboard">
+          <Route index element={!loggedIn ? <Navigate to="/login" /> : <Dashboard />} />
+          <Route
+            path="leaderboard"
+            element={!loggedIn ? <Navigate to="/login" /> : <LeaderBoard />}
+          />
+          <Route path="reports" element={!loggedIn ? <Navigate to="/login" /> : <Reports />} />
+        </Route>
+        <Route path="/login" element={loggedIn ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/register" element={loggedIn ? <Navigate to="/dashboard" /> : <Register />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Box>
   );
 }
 

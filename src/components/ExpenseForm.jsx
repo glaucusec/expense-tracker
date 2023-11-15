@@ -1,13 +1,8 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import * as Chakra from "@chakra-ui/react";
 import InputField from "./ui/InputField";
 import axios from "axios";
 import { ExpensesContext } from "../context/Expenses";
-
-const authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhlOWQwMTI3YmI1YWI0ZmMxZmEwZWQiLCJuYW1lIjoiQWJoaXNoZWsiLCJpYXQiOjE2OTk3ODYzNDB9.sR3h7dEhEd5ONgr7C7_J4lwuzTHuB0ha74NOD1QgfBo";
-
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export default function ExpenseForm({ setShowExpenseFormHandler }) {
   const expensesContext = useContext(ExpensesContext);
@@ -15,6 +10,7 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
   const updateExpenseHandler = expensesContext.updateExpenseHandler;
 
   const toast = Chakra.useToast();
+  const [loading, setLoading] = useState(false);
 
   const amountRef = useRef();
   const descRef = useRef();
@@ -22,21 +18,20 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const enteredAmount = amountRef.current.value;
     const enteredDescription = descRef.current.value;
     const selectedCategory = categoryRef.current.value;
     try {
       const response = await axios.post(
-        `${SERVER_URL}/user/expense`,
+        `/api/expense`,
         {
           amount: enteredAmount,
           description: enteredDescription,
           category: selectedCategory,
         },
         {
-          headers: {
-            Authorization: authToken,
-          },
+          withCredentials: true,
         }
       );
       if (response.status == 201) {
@@ -48,10 +43,20 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
           duration: 5000,
           isClosable: true,
         });
+        setLoading(false);
         updateExpenseHandler(response.data);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.error(error);
+      toast({
+        position: "top-right",
+        title: error.response.data.message,
+        description: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 
@@ -84,7 +89,12 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
           </Chakra.Select>
           <Chakra.Box pt={"1rem"}>
             <Chakra.ButtonGroup>
-              <Chakra.Button type="submit" colorScheme="blue" size={"sm"}>
+              <Chakra.Button
+                isLoading={loading ? true : false}
+                type="submit"
+                colorScheme="blue"
+                size={"sm"}
+              >
                 Add Expense
               </Chakra.Button>
               <Chakra.Button onClick={setShowExpenseFormHandler} size={"sm"}>
