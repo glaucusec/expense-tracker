@@ -78,9 +78,7 @@ app.use((req, res) => {
 
 async function main() {
   try {
-    await mongoose.connect(
-      "mongodb+srv://abhishekbaiju:oMGjQxzuPUfmWyXA@cluster0.hhe5vba.mongodb.net/?retryWrites=true&w=majority"
-    );
+    await mongoose.connect(process.env.MONGODB_SERVER);
     console.log("DB connected");
     app.listen(3000);
     console.log("Listening ...");
