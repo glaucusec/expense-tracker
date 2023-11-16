@@ -18,6 +18,7 @@ export default function LeaderBoard() {
     async function fetchLeaderBoard() {
       try {
         const response = await axios.post(`${VITE_SERVER_URL}/api/leaderboard`, {
+          withCredentials: true,
           headers: {
             Authorization: authToken,
           },

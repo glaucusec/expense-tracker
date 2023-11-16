@@ -9,6 +9,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
+console.log(process.env.ORIGIN_SERVER);
 
 const apiRoutes = require("./routes/routes");
 

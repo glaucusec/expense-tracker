@@ -33,7 +33,7 @@ export default function Simple() {
 
   const logoutHandler = async () => {
     try {
-      const response = await axios.get(`${VITE_SERVER_URL}/api/logout`);
+      const response = await axios.get(`${VITE_SERVER_URL}/api/logout`, { withCredentials: true });
       if (response.status == 200) {
         toast({
           status: "warning",

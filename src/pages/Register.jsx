@@ -29,7 +29,7 @@ export default function Register() {
           email: currEmail,
           password: currPassword,
         },
-        { headers: { "Content-Type": "application/json" } }
+        { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
       const statusCode = response.status;
       if (statusCode == 200) {
