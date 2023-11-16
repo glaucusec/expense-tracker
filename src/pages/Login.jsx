@@ -36,6 +36,7 @@ export default function Login() {
           password: currPassword,
         },
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
