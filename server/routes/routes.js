@@ -37,4 +37,8 @@ router.post("/forgot-password", passwordController.postForgotPassword);
 router.get("/reset-password/:id", passwordController.getResetPassword);
 router.post("/reset-password/", passwordController.postResetPassword);
 
+// Testing Routes
+router.get("/alive", (req, res, next) => res.status(200).json("Yes"));
+router.post("/alive", (req, res, next) => res.status(200).json("Yes"));
+
 module.exports = router;

@@ -4,6 +4,8 @@ import InputField from "./ui/InputField";
 import axios from "axios";
 import { ExpensesContext } from "../context/Expenses";
 
+const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 export default function ExpenseForm({ setShowExpenseFormHandler }) {
   const expensesContext = useContext(ExpensesContext);
   const expenses = expensesContext.expenses;
@@ -24,7 +26,7 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
     const selectedCategory = categoryRef.current.value;
     try {
       const response = await axios.post(
-        `/api/expense`,
+        `${VITE_SERVER_URL}/api/expense`,
         {
           amount: enteredAmount,
           description: enteredDescription,

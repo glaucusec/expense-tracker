@@ -24,6 +24,8 @@ import { useContext } from "react";
 import { AuthContext } from "../context/Auth";
 import PremiumPurchase from "./PremiumPurchase";
 
+const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 export default function Simple() {
   const authCtx = useContext(AuthContext);
   const toast = useToast();
@@ -31,7 +33,7 @@ export default function Simple() {
 
   const logoutHandler = async () => {
     try {
-      const response = await axios.get("/api/logout");
+      const response = await axios.get(`${VITE_SERVER_URL}/api/logout`);
       if (response.status == 200) {
         toast({
           status: "warning",

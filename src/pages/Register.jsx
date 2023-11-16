@@ -6,6 +6,8 @@ import * as Chakra from "@chakra-ui/react";
 import ValidationMessage from "../components/ui/ValidationMessage";
 import InputField from "../components/ui/InputField";
 
+const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 export default function Register() {
   const nameRef = useRef("");
   const emailRef = useRef("");
@@ -21,7 +23,7 @@ export default function Register() {
     const currPassword = passwordRef.current.value;
     try {
       const response = await axios.post(
-        `/api/signup`,
+        `${VITE_SERVER_URL}/api/signup`,
         {
           name: currName,
           email: currEmail,

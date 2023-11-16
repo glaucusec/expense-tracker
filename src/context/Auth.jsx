@@ -1,6 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
+const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 export const AuthContext = createContext({});
 
 export default function AuthProvider(props) {
@@ -17,13 +19,15 @@ export default function AuthProvider(props) {
     const newState = { ...state };
     newState.auth.isLoggedIn = status;
     newState.auth.name = name;
-    newState.auth.isPremiumUser = isPremium
+    newState.auth.isPremiumUser = isPremium;
     setState(newState);
   }
 
   useEffect(() => {
     async function fetchCurrentSession() {
-      const response = await axios.get("/api/me", { withCredentials: true });
+      const response = await axios.get(`${VITE_SERVER_URL}/api/me`, {
+        withCredentials: true,
+      });
       if (response.data.success) {
         const updatedState = { ...state };
         updatedState.auth.isLoggedIn = response.data.success;

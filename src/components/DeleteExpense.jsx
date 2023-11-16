@@ -17,7 +17,7 @@ export default function DeleteExpense({ _id }) {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `/api/expense`,
+        `${VITE_SERVER_URL}/api/expense`,
         {
           data: { id: _id },
         },

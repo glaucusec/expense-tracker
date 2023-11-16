@@ -5,6 +5,8 @@ import { ExpensesContext } from "../context/Expenses";
 import DeleteExpense from "./DeleteExpense";
 import EditExpense from "./EditExpense";
 
+const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 export default function ShowExpenses() {
   const expensesContext = useContext(ExpensesContext);
   const expenses = expensesContext.expenses;
@@ -16,7 +18,7 @@ export default function ShowExpenses() {
   useEffect(() => {
     async function fetchExpenses() {
       try {
-        const response = await axios.get(`/api/expenses`, {
+        const response = await axios.get(`${VITE_SERVER_URL}/api/expenses`, {
           withCredentials: true,
         });
         const receivedExpenses = response.data;

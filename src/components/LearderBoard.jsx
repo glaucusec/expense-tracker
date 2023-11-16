@@ -7,6 +7,8 @@ const authToken = import.meta.env.VITE_AUTH_TOKEN;
 
 const prizes = [GiPodiumWinner, GiPodiumSecond, GiPodiumThird];
 
+const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 export default function LeaderBoard() {
   const toast = Chakra.useToast();
   const [leaderboard, setLeaderBoard] = useState([]);
@@ -15,7 +17,7 @@ export default function LeaderBoard() {
   useEffect(() => {
     async function fetchLeaderBoard() {
       try {
-        const response = await axios.post(`/api/leaderboard`, {
+        const response = await axios.post(`${VITE_SERVER_URL}/api/leaderboard`, {
           headers: {
             Authorization: authToken,
           },
