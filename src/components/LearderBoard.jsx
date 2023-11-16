@@ -17,12 +17,16 @@ export default function LeaderBoard() {
   useEffect(() => {
     async function fetchLeaderBoard() {
       try {
-        const response = await axios.post(`${VITE_SERVER_URL}/api/leaderboard`, {
-          withCredentials: true,
-          headers: {
-            Authorization: authToken,
-          },
-        });
+        const response = await axios.post(
+          `${VITE_SERVER_URL}/api/leaderboard`,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: authToken,
+            },
+          }
+        );
         const receivedLeaderBoard = response.data;
         setIsLoading(false);
         setLeaderBoard(receivedLeaderBoard);
