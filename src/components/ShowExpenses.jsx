@@ -18,9 +18,12 @@ export default function ShowExpenses() {
   useEffect(() => {
     async function fetchExpenses() {
       try {
-        const response = await axios.get(`${VITE_SERVER_URL}/api/expenses`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          PROD ? `${VITE_SERVER_URL}/api/expenses` : `/api/expenses`,
+          {
+            withCredentials: true,
+          }
+        );
         const receivedExpenses = response.data;
         setIsLoading(false);
         setExpenseHandler(receivedExpenses);

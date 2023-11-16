@@ -9,7 +9,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
-console.log(process.env.ORIGIN_SERVER);
 
 const apiRoutes = require("./routes/routes");
 
@@ -29,12 +28,14 @@ app.use(
   })
 );
 
+app.set('trust proxy', 1)
+
 app.use(
   session({
     resave: false,
     saveUninitialized: false,
     secret: process.env.SECRET_KEY,
-    cookie: { sameSite: "none", secure: 'auto' },
+    cookie: { sameSite: "none", secure: true },
   })
 );
 

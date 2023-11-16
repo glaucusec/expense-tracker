@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export const AuthContext = createContext({});
@@ -25,7 +26,7 @@ export default function AuthProvider(props) {
 
   useEffect(() => {
     async function fetchCurrentSession() {
-      const response = await axios.get(`${VITE_SERVER_URL}/api/me`, {
+      const response = await axios.get(PROD ? `${VITE_SERVER_URL}/api/me` : `/api/me`, {
         withCredentials: true,
       });
       if (response.data.success) {

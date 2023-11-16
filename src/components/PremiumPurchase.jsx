@@ -4,6 +4,7 @@ import axios from "axios";
 import useRazorpay from "react-razorpay";
 import { AuthContext } from "../context/Auth";
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export default function PremiumPurchase() {
@@ -13,9 +14,13 @@ export default function PremiumPurchase() {
 
   const premiumPurchaseHandler = async () => {
     try {
-      const response = await axios.post(`${VITE_SERVER_URL}/api/premium`, null, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        PROD ? `${VITE_SERVER_URL}/api/premium` : `/api/premium`,
+        null,
+        {
+          withCredentials: true,
+        }
+      );
 
       let options = {
         key: response.data.key_id,
@@ -28,7 +33,9 @@ export default function PremiumPurchase() {
         handler: async function (res) {
           try {
             const response = await axios.post(
-              `${VITE_SERVER_URL}/api/updatetransactionstatus`,
+              PROD
+                ? `${VITE_SERVER_URL}/api/updatetransactionstatus`
+                : `/api/updatetransactionstatus`,
               {
                 success: true,
                 order_id: res.razorpay_order_id,
@@ -78,7 +85,7 @@ export default function PremiumPurchase() {
       rzp1.open();
       rzp1.on("payment.failed", async function (response) {
         await axios.post(
-          `${VITE_SERVER_URL}/api/updatetransactionstatus`,
+          PROD ? `${VITE_SERVER_URL}/api/updatetransactionstatus` : `/api/updatetransactionstatus`,
           {
             success: false,
             order_id: response.error.metadata.order_id,

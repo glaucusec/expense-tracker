@@ -6,6 +6,7 @@ import InputField from "./ui/InputField";
 import { ExpensesContext } from "../context/Expenses";
 import { FaEdit } from "react-icons/fa";
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 const categories = ["Fuel", "Entertainment", "Beauty/Wellness", "Pets", "Shopping"];
@@ -39,7 +40,7 @@ export default function EditExpense({ expense }) {
     setLoading(true);
     try {
       const response = await axios.put(
-        `${VITE_SERVER_URL}/api/expense`,
+        PROD ? `${VITE_SERVER_URL}/api/expense` : `/api/expense`,
         {
           id: _id,
           amount: amount,

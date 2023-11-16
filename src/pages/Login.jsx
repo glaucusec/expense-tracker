@@ -7,6 +7,7 @@ import * as Chakra from "@chakra-ui/react";
 import InputField from "../components/ui/InputField";
 import ValidationMessage from "../components/ui/ValidationMessage";
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 // Context
@@ -30,7 +31,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `${VITE_SERVER_URL}/api/login`,
+        PROD ? `${VITE_SERVER_URL}/api/login` : `/api/login`,
         {
           email: currEmail,
           password: currPassword,

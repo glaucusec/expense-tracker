@@ -7,6 +7,7 @@ const authToken = import.meta.env.VITE_AUTH_TOKEN;
 
 const prizes = [GiPodiumWinner, GiPodiumSecond, GiPodiumThird];
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export default function LeaderBoard() {
@@ -18,7 +19,7 @@ export default function LeaderBoard() {
     async function fetchLeaderBoard() {
       try {
         const response = await axios.post(
-          `${VITE_SERVER_URL}/api/leaderboard`,
+          PROD ? `${VITE_SERVER_URL}/api/leaderboard` : `/api/leaderboard`,
           {},
           {
             withCredentials: true,

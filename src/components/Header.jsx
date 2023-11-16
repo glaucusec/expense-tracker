@@ -24,6 +24,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/Auth";
 import PremiumPurchase from "./PremiumPurchase";
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export default function Simple() {
@@ -33,7 +34,9 @@ export default function Simple() {
 
   const logoutHandler = async () => {
     try {
-      const response = await axios.get(`${VITE_SERVER_URL}/api/logout`, { withCredentials: true });
+      const response = await axios.get(PROD ? `${VITE_SERVER_URL}/api/logout` : `/api/logout`, {
+        withCredentials: true,
+      });
       if (response.status == 200) {
         toast({
           status: "warning",
