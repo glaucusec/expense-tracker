@@ -17,7 +17,6 @@ exports.signUp = async (req, res, next) => {
     const hash = await bcrypt.hash(password, saltrounds);
     const userCreated = await User.create({ name: name, email: email, password: hash });
     if (userCreated) {
-      console.log("@Message: new user signed in.");
       res.status(200).send({ userCreated: true });
     }
   } catch (e) {

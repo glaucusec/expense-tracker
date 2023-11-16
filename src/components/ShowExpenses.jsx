@@ -5,6 +5,7 @@ import { ExpensesContext } from "../context/Expenses";
 import DeleteExpense from "./DeleteExpense";
 import EditExpense from "./EditExpense";
 
+const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export default function ShowExpenses() {
