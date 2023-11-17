@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState } from "react";
+import ReportDownload from "./reports/ReportDownload";
+import ReportHistory from "./reports/ReportHistory";
 
 export default function Reports() {
   return (
-    <div>Reports</div>
-  )
+    <React.Fragment>
+      <ReportDownload />
+      <ReportHistory />
+    </React.Fragment>
+  );
 }

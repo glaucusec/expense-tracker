@@ -12,6 +12,7 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Text,
   MenuDivider,
   useToast,
 } from "@chakra-ui/react";
@@ -27,7 +28,7 @@ import PremiumPurchase from "./PremiumPurchase";
 const PROD = import.meta.env.VITE_ENV === "production";
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-export default function Simple() {
+export default function Header({ currPage, setCurrPage }) {
   const authCtx = useContext(AuthContext);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,14 +66,32 @@ export default function Simple() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Link to={"/dashboard"}>Expense Tracker</Link>
+            <Text
+              as={currPage == "dashboard" ? "b" : ""}
+              cursor={"pointer"}
+              onClick={() => setCurrPage("dashboard")}
+            >
+              Expense Tracker
+            </Text>
           </HStack>
           <Flex alignItems={"center"}>
             {authCtx.auth.isPremiumUser ? (
               <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }} pr={"10px"}>
                 <HStack spacing={8} alignItems={"center"}>
-                  <Link to={"/dashboard/leaderboard"}>Leaderboard</Link>
-                  <Link to={"/dashboard/reports"}>Reports</Link>
+                  <Text
+                    as={currPage == "leaderboard" ? "b" : ""}
+                    cursor={"pointer"}
+                    onClick={() => setCurrPage("leaderboard")}
+                  >
+                    Leaderboard
+                  </Text>
+                  <Text
+                    as={currPage == "reports" ? "b" : ""}
+                    cursor={"pointer"}
+                    onClick={() => setCurrPage("reports")}
+                  >
+                    Reports
+                  </Text>
                 </HStack>
                 <Icon as={MdWorkspacePremium} w={8} h={8} color="yellow.500" />
               </HStack>
@@ -99,8 +118,20 @@ export default function Simple() {
           <Box pb={4} display={{ md: "none" }}>
             {authCtx.auth.isPremiumUser ? (
               <Stack as={"nav"} spacing={4}>
-                <Link to={"/dashboard/leaderboard"}>Leaderboard</Link>
-                <Link to={"/dashboard/reports"}>Reports</Link>
+                <Text
+                  as={currPage == "leaderboard" ? "b" : ""}
+                  cursor={"pointer"}
+                  onClick={() => setCurrPage("leaderboard")}
+                >
+                  Leaderboard
+                </Text>
+                <Text
+                  as={currPage == "reports" ? "b" : ""}
+                  cursor={"pointer"}
+                  onClick={() => setCurrPage("reports")}
+                >
+                  Reports
+                </Text>
                 <Icon as={MdWorkspacePremium} w={8} h={8} color="yellow.500" />
               </Stack>
             ) : (

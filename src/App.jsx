@@ -4,31 +4,38 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./components/Dashboard";
 import NotFound from "./pages/NotFound";
 import LeaderBoard from "./components/LearderBoard";
 import Reports from "./components/Reports";
 import Header from "./components/Header";
+import DashboardHandler from "./pages/DashboardHandler";
 
 import { AuthContext } from "./context/Auth";
 
 function App() {
+  const [currPage, setCurrPage] = useState("dashboard");
+
   const authCtx = useContext(AuthContext);
 
   const loggedIn = authCtx.auth.isLoggedIn;
-  const renderHeader = loggedIn && <Header />;
+  const renderHeader = loggedIn && <Header currPage={currPage} setCurrPage={setCurrPage} />;
 
   return (
     <Box id="dashboard">
       {renderHeader}
       <Routes>
         <Route path="/dashboard">
-          <Route index element={!loggedIn ? <Navigate to="/login" /> : <Dashboard />} />
           <Route
-            path="leaderboard"
-            element={!loggedIn ? <Navigate to="/login" /> : <LeaderBoard />}
+            index
+            element={
+              !loggedIn ? (
+                <Navigate to="/login" />
+              ) : (
+                <DashboardHandler currPage={currPage} setCurrPage={setCurrPage} />
+              )
+            }
           />
-          <Route path="reports" element={!loggedIn ? <Navigate to="/login" /> : <Reports />} />
         </Route>
         <Route path="/login" element={loggedIn ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={loggedIn ? <Navigate to="/dashboard" /> : <Register />} />

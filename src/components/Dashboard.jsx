@@ -2,10 +2,10 @@ import "./Dashboard.css";
 import React, { useState } from "react";
 import * as Chakra from "@chakra-ui/react";
 
-import ExpenseForm from "../components/ExpenseForm";
-import Header from "../components/Header";
-import ShowExpenses from "../components/ShowExpenses";
-import LeaderBoard from "../components/LearderBoard";
+import ExpenseForm from "./ExpenseForm";
+import Header from "./Header";
+import ShowExpenses from "./ShowExpenses";
+import LeaderBoard from "./LearderBoard";
 
 export default function Dashboard() {
   const [showExpenseForm, setShowExpenseForm] = useState(true);

@@ -23,9 +23,9 @@ router.delete("/expense", isLoggedIn, expenseController.deleteExpense);
 router.put("/expense", isLoggedIn, expenseController.putEditExpense);
 
 // Premium
-router.post("/leaderboard", isPremium, premiumRouter.leaderBoard);
-// router.get('/download-report', middleware.authenticate, premiumRouter.downloadReport);
-// router.get('/fileurls', middleware.authenticate, premiumRouter.fileUrls);
+router.post("/leaderboard", isLoggedIn, isPremium, premiumRouter.leaderBoard);
+router.get("/download-report", isLoggedIn, isPremium, premiumRouter.downloadReport);
+router.get("/fileurls", isLoggedIn, isPremium, premiumRouter.fileUrls);
 
 // Premium Purchase
 router.post("/premium", purchaseController.purchasePremium);

@@ -37,9 +37,11 @@ exports.purchasePremium = (req, res, next) => {
 exports.updateTransactionStatus = async (req, res, next) => {
   if (!req.body.success) {
     order_id = req.body.order_id;
-    const currOrder = await Order.find({ orderId: order_id });
-    currOrder.status = "failed";
-    currOrder.save();
+    const currOrder = await Order.findOne({ orderId: order_id }); // Use findOne instead of find
+    if (currOrder) {
+      currOrder.status = "failed";
+      await currOrder.save();
+    }
   } else {
     try {
       const { order_id, payment_id } = req.body;
@@ -48,18 +50,24 @@ exports.updateTransactionStatus = async (req, res, next) => {
         { orderId: order_id },
         { paymentId: payment_id, status: "success" }
       );
+
       const userExists = await User.findById(req.session._id);
 
-      userExists.isPremiumUser = true;
-      const promise2 = await userExists.save();
+      if (userExists) {
+        userExists.isPremiumUser = true;
+        const promise2 = await userExists.save();
 
-      Promise.all([promise1, promise2])
-        .then(() => {
-          res.status(200).json({ success: true, message: "Transaction Success" });
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
+        Promise.all([promise1, promise2])
+          .then(() => {
+            req.session.isPremiumUser = userExists.isPremiumUser; // Update the session here
+            res.status(200).json({ success: true, message: "Transaction Success" });
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
     } catch (err) {
       console.log(err.message);
       return res.status(500).json({ message: "Internal Server Error" });
