@@ -54,7 +54,6 @@ export default function EditExpense({ expense }) {
       if (response.status == 200) {
         editExpenseHandler(response.data);
         toast({
-          position: "top-right",
           title: "Success",
           description: "Expense edited successfully",
           status: "success",
@@ -69,7 +68,6 @@ export default function EditExpense({ expense }) {
       setLoading(false);
       console.error(error);
       toast({
-        position: "top-right",
         title: error.response.data.message,
         description: error.message,
         status: "error",

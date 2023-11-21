@@ -120,6 +120,8 @@ export default function Login() {
           )}
           <Chakra.Box>
             If you haven't registered, <Link to={"/register"}>SignUp Here </Link>
+            <br />
+            Forgot password?, <Link to={"/forgot-password"}>Reset Here </Link>
           </Chakra.Box>
         </Chakra.Box>
       </form>

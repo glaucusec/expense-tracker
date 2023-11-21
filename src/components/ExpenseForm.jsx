@@ -39,7 +39,6 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
       );
       if (response.status == 201) {
         toast({
-          position: "top-right",
           title: "Success",
           description: "Expense created succesfully!",
           status: "success",
@@ -53,7 +52,6 @@ export default function ExpenseForm({ setShowExpenseFormHandler }) {
       setLoading(false);
       console.error(error);
       toast({
-        position: "top-right",
         title: error.response.data.message,
         description: error.message,
         status: "error",

@@ -47,7 +47,6 @@ export default function PremiumPurchase() {
             );
             if (response.status == 200) {
               toast({
-                position: "top-right",
                 title: "Congratulations!",
                 description: "You are a premium user! Enjoy Benefits",
                 status: "success",
@@ -59,7 +58,6 @@ export default function PremiumPurchase() {
             }
           } catch (error) {
             toast({
-              position: "top-right",
               title: "Error!",
               description: "Something went wrong on server side!",
               status: "error",
@@ -96,7 +94,6 @@ export default function PremiumPurchase() {
           }
         );
         toast({
-          position: "top-right",
           title: "Payment Failed!",
           description: "You transation Failed. Try later!",
           status: "error",
@@ -106,7 +103,6 @@ export default function PremiumPurchase() {
       });
     } catch (error) {
       toast({
-        position: "top-right",
         title: "Error!",
         description: "Something went wrong on server side!",
         status: "error",

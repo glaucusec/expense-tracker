@@ -26,7 +26,6 @@ export default function ReportDownload() {
         document.body.removeChild(downloadLink);
       }
       toast({
-        position: "top-right",
         title: "Success",
         description: "Report Downloaded!",
         status: "success",
@@ -38,7 +37,6 @@ export default function ReportDownload() {
       console.log(error.response.data.message);
       setLoading(false);
       toast({
-        position: "top-right",
         title: "Failed",
         description: "Report download Failed. Try Later!",
         status: "error",

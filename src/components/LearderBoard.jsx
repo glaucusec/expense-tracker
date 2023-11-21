@@ -34,7 +34,6 @@ export default function LeaderBoard() {
       } catch (error) {
         setIsLoading(false);
         toast({
-          position: "top-right",
           title: "Error fetching Leaderboard",
           description: "Check your connection or Try later!",
           status: "error",

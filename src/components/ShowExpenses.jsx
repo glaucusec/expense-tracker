@@ -33,7 +33,6 @@ export default function ShowExpenses() {
         setIsLoading(false);
 
         toast({
-          position: "top-right",
           title: error.response.data.message,
           description: error.message,
           status: "error",

@@ -1,44 +1,28 @@
 import "./App.css";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./components/Dashboard";
 import NotFound from "./pages/NotFound";
-import LeaderBoard from "./components/LearderBoard";
-import Reports from "./components/Reports";
-import Header from "./components/Header";
 import DashboardHandler from "./pages/DashboardHandler";
 
 import { AuthContext } from "./context/Auth";
 
-function App() {
-  const [currPage, setCurrPage] = useState("dashboard");
+import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 
+function App() {
   const authCtx = useContext(AuthContext);
 
   const loggedIn = authCtx.auth.isLoggedIn;
-  const renderHeader = loggedIn && <Header currPage={currPage} setCurrPage={setCurrPage} />;
 
   return (
     <Box id="dashboard">
-      {renderHeader}
       <Routes>
-        <Route path="/dashboard">
-          <Route
-            index
-            element={
-              !loggedIn ? (
-                <Navigate to="/login" />
-              ) : (
-                <DashboardHandler currPage={currPage} setCurrPage={setCurrPage} />
-              )
-            }
-          />
-        </Route>
+        <Route path="/dashboard" element={<DashboardHandler />}></Route>
         <Route path="/login" element={loggedIn ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={loggedIn ? <Navigate to="/dashboard" /> : <Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Box>

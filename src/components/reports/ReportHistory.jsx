@@ -53,7 +53,6 @@ export default function ReportHistory() {
       console.error(error);
       setIsLoading(false);
       toast({
-        position: "top-right",
         title: "Error!",
         description: "Something went wrong on our side! Try later.",
         status: "error",

@@ -28,7 +28,6 @@ export default function DeleteExpense({ _id }) {
       );
       if (response.status == 200) {
         toast({
-          position: "top-right",
           title: "Success",
           description: "Expense deleted successfully",
           status: "warning",
@@ -42,7 +41,6 @@ export default function DeleteExpense({ _id }) {
       setLoading(false);
       console.error(e.message);
       toast({
-        position: "top-right",
         title: error.response.data.message,
         description: error.message,
         status: "error",
