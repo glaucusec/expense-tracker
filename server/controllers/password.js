@@ -44,7 +44,7 @@ exports.postResetPassword = async (req, res, next) => {
     const hash = await bcrypt.hash(password1, saltrounds);
 
     await User.updateOne({ _id: token.userId }, { password: hash });
-    
+
     token.isActive = false;
     await token.save();
 
@@ -55,9 +55,6 @@ exports.postResetPassword = async (req, res, next) => {
   }
 };
 
-exports.getForgotPassword = (req, res, next) => {
-  res.sendFile(path.join(rootDir, "views", "forgot-password.html"));
-};
 
 exports.postForgotPassword = async (req, res, next) => {
   // await ForgotPassword.deleteMany();
