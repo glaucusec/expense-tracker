@@ -26,7 +26,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        PROD ? `${VITE_SERVER_URL}/api/fogot-password` : `/api/forgot-password`,
+        PROD ? `${VITE_SERVER_URL}/api/forgot-password` : `/api/forgot-password`,
         {
           email: currEmail,
         },

@@ -55,14 +55,14 @@ exports.postResetPassword = async (req, res, next) => {
   }
 };
 
-
 exports.postForgotPassword = async (req, res, next) => {
   // await ForgotPassword.deleteMany();
   const user_email = req.body.email;
   try {
     const OTP = UserServices.generateOTP();
     const user = await User.findOne({ email: user_email }).select("_id email");
-    if (!user) {
+    
+    if (user == null) {
       return res.status(404).json({ message: "User does not exist!" });
     }
     await ForgotPassword.create({ token: OTP, isActive: true, userId: user._id });
