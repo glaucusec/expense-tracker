@@ -63,7 +63,6 @@ exports.putEditExpense = async (req, res, next) => {
   const userId = req.session._id;
   try {
     const user = await User.findById(userId);
-    let totalAmount = user.totalAmount;
 
     const currExpense = await Expense.findById(id);
 

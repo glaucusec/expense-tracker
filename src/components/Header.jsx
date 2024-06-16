@@ -16,7 +16,6 @@ import {
   MenuDivider,
   useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, Icon } from "@chakra-ui/icons";
 import { MdWorkspacePremium } from "react-icons/md";
 import axios from "axios";

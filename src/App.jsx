@@ -14,7 +14,6 @@ import LandingPage from "./pages/LandingPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
-
   const loggedIn = authCtx.auth.isLoggedIn;
 
   return (
