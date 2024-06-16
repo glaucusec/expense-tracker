@@ -10,6 +10,7 @@ import DashboardHandler from "./pages/DashboardHandler";
 import { AuthContext } from "./context/Auth";
 
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -19,6 +20,7 @@ function App() {
   return (
     <Box id="dashboard">
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardHandler />}></Route>
         <Route path="/login" element={loggedIn ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={loggedIn ? <Navigate to="/dashboard" /> : <Register />} />
